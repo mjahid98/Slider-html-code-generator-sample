@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Code Generator</title>
+    <script src="../codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="../codemirror/lib/codemirror.css">
+    <script src="../codemirror/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="../codemirror/theme/material-darker.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100vh;
+        }
+
+        #genCode {
+            /* display: none; */
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container-fluid px-5 h-100">
+        <div class="row">
+            <div class="col-md-3 py-5">
+                <div class="mb-1">
+                    <label for="text1" class="form-label">Text 1</label>
+                    <input type="text" class="form-control" id="text1"
+                        placeholder="On hover displays the 1st line of text">
+                </div>
+                <div class="mb-1">
+                    <label for="text2" class="form-label">Text 2</label>
+                    <input type="text" class="form-control" id="text2"
+                        placeholder="On hover displays the 2nd line of text">
+                </div>
+                <div class="mb-1">
+                    <label for="text3" class="form-label">Text 2</label>
+                    <input type="text" class="form-control" id="text3"
+                        placeholder="On hover displays the 3rd line of text">
+                </div>
+                <button id="genCodeBtn">Generate</button>
+            </div>
+            <div class="col-md-9">
+                <!-- <textarea name="" id="genCode"> -->
+                    <!-- //Here is your code  -->
+                <!-- <div class="carousel-item-container hide-carousel-item" id="carousel-item-one" data-istnieje="istnieje">
+                    <div>
+                        <div class="carousel-hover-text link-pozytywni" onClick="javascript:location.href='{url}';">
+                        <h4>{text1}</h4>
+                        <h4>{text2}</h4>
+                        <h4>{text3}</h4>
+                    </div>
+                </div>
+                <img src="{imgSrc}"  onClick="javascript:location.href='{url}';" class="link-cursor" alt="">
+                <a href="{kupBiletLink}" class="redBtn">KUP BILET<img src="https://garnizonsztuki.org.pl/wp-content/themes/garnizon/images/icon-ticket.svg"></a>
+            </div> -->
+
+            <!-- <div class="carousel-item-container hide-carousel-item" id="carousel-item-one" data-istnieje='<?php echo do_shortcode('[sv slug="karuzela_4_istnieje"]'); ?>'>
+                <div>
+                  <div class="carousel-hover-text link-pozytywni" onClick="javascript:location.href='<?php echo do_shortcode('[sv slug="karuzela_4_wiecej_link"]'); ?>';">
+                    <h4><?php echo do_shortcode('[sv slug="karuzela_4_tekst_1"]'); ?></h4>
+                    <h4><?php echo do_shortcode('[sv slug="karuzela_4_tekst_2"]'); ?></h4>
+                    <h4><?php echo do_shortcode('[sv slug="karuzela_4_tekst_3"]'); ?></h4>
+                  </div>
+                </div>
+                <img src="<?php echo do_shortcode('[sv slug="karuzela_4_plakat"]'); ?>"  onClick="javascript:location.href='<?php echo do_shortcode('[sv slug="karuzela_4_wiecej_link"]'); ?>';" class="link-cursor" alt="">
+                <a href="<?php echo do_shortcode('[sv slug="karuzela_4_kup_link"]'); ?>" class="redBtn">KUP BILET<img src="<?php echo get_template_directory_uri(); ?>/images/icon-ticket.svg"></a>
+              </div> -->
+                <!-- </textarea> -->
+
+                <textarea name="" id="genCode"></textarea>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        let genCode = document.querySelector('#genCode');
+        let genCodeBtn = document.querySelector('#genCodeBtn');
+
+        // genCode.addEventListener("input", initCM);
+
+        genCode.value = `<div class="carousel-item-container hide-carousel-item" id="carousel-item-one" data-istnieje='istnieje'>
+          <div>
+            <div class="carousel-hover-text link-pozytywni" onClick="javascript:location.href='{url}';">
+              <h4>{text1}</h4>
+              <h4>{text2}</h4>
+              <h4>{text3}</h4>
+            </div>
+          </div>
+          <img src="{imgSrc}"  onClick="javascript:location.href='{url}';" class="link-cursor" alt="">
+          <a href="{kupBiletLink}" class="redBtn">KUP BILET<img src="https://garnizonsztuki.org.pl/wp-content/themes/garnizon/images/icon-ticket.svg"></a>
+        </div>`;
+
+            var editor = CodeMirror.fromTextArea(genCode, {
+                lineNumbers: true,
+                mode: 'xml',
+                theme: 'material-darker',
+                readOnly: true
+            })
+
+            editor.setSize('auto', '100vh')
+
+
+
+
+
+        genCodeBtn.onclick = function () {
+            document.querySelectorAll('input').forEach((input) => {
+                if (input.id == 'text1') {
+                    genCode.value = genCode.value.replaceAll("{text1}", input.value);
+                }else{
+                    genCode.value = genCode.value.replaceAll("{text1}", '');
+                }
+
+                if (input.id == 'text2') {
+                    genCode.value = genCode.value.replaceAll("{text2}", input.value);
+                }else{
+                    genCode.value = genCode.value.replaceAll("{text1}", '');
+                }
+                
+                if (input.id == 'text3') {
+                    genCode.value = genCode.value.replaceAll("{text3}", input.value);
+                }else{
+                    genCode.value = genCode.value.replaceAll("{text1}", '');
+                }
+                console.log(input.id, input.value)
+            })
+            // genCode.value = genCode.value.replaceAll("{text1}", "The title");
+            // genCode.value = genCode.value.replaceAll("{text2}", "The title");
+            // genCode.value = genCode.value.replaceAll("{text3}", "The title");
+            editor.setValue(genCode.value)
+        }
+
+        
+
+    </script>
+</body>
+
+</html>

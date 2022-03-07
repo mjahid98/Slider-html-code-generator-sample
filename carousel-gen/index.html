@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Code Generator</title>
+    <script src="../codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="../codemirror/lib/codemirror.css">
+    <script src="../codemirror/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="../codemirror/theme/material-darker.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100vh;
+        }
+
+        #genCode {
+            /* display: none; */
+        }
+
+        #genCodeHelper {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container-fluid px-5 h-100">
+        <div class="row">
+            <div class="col-md-3 py-5">
+                <form>
+                    <div class="mb-1">
+                        <label for="text1" class="form-label">Text 1</label>
+                        <input type="text" class="form-control" id="text1"
+                            placeholder="On hover displays the 1st line of text">
+                    </div>
+                    <div class="mb-1">
+                        <label for="text2" class="form-label">Text 2</label>
+                        <input type="text" class="form-control" id="text2"
+                            placeholder="On hover displays the 2nd line of text">
+                    </div>
+                    <div class="mb-1">
+                        <label for="text3" class="form-label">Text 3</label>
+                        <input type="text" class="form-control" id="text3"
+                            placeholder="On hover displays the 3rd line of text">
+                    </div>
+                    <div class="mb-1">
+                        <label for="imgSrc" class="form-label">Image Source (Link of the background image)</label>
+                        <input type="text" class="form-control" id="imgSrc"
+                            placeholder="The background image link">
+                    </div>
+                    <div class="mb-1">
+                        <label for="url" class="form-label">On click URL</label>
+                        <input type="text" class="form-control" id="url"
+                            placeholder="Where to go when clicked">
+                    </div>
+                    <div class="mb-1">
+                        <label for="kupBiletLink" class="form-label">Kup Bilet Button URL</label>
+                        <input type="text" class="form-control" id="kupBiletLink"
+                            placeholder="Kup Bilet Link">
+                    </div>
+                    <div class="btn-group d-flex my-3">
+                        <button class="btn btn-danger" id="genCodeResetBtn" type="reset">Reset</button>
+                    <button class="btn btn-success" id="genCodeBtn">Generate</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-9 py-4">
+                <!-- <textarea name="" id="genCode"> -->
+                <!-- //Here is your code  -->
+                <!-- <div class="carousel-item-container hide-carousel-item" id="carousel-item-one" data-istnieje="istnieje">
+                    <div>
+                        <div class="carousel-hover-text link-pozytywni" onClick="javascript:location.href='{url}';">
+                        <h4>{text1}</h4>
+                        <h4>{text2}</h4>
+                        <h4>{text3}</h4>
+                    </div>
+                </div>
+                <img src="{imgSrc}"  onClick="javascript:location.href='{url}';" class="link-cursor" alt="">
+                <a href="{kupBiletLink}" class="redBtn">KUP BILET<img src="https://garnizonsztuki.org.pl/wp-content/themes/garnizon/images/icon-ticket.svg"></a>
+            </div> -->
+
+                <!-- <div class="carousel-item-container hide-carousel-item" id="carousel-item-one" data-istnieje='<?php echo do_shortcode('[sv slug="karuzela_4_istnieje"]'); ?>'>
+                <div>
+                  <div class="carousel-hover-text link-pozytywni" onClick="javascript:location.href='<?php echo do_shortcode('[sv slug="karuzela_4_wiecej_link"]'); ?>';">
+                    <h4><?php echo do_shortcode('[sv slug="karuzela_4_tekst_1"]'); ?></h4>
+                    <h4><?php echo do_shortcode('[sv slug="karuzela_4_tekst_2"]'); ?></h4>
+                    <h4><?php echo do_shortcode('[sv slug="karuzela_4_tekst_3"]'); ?></h4>
+                  </div>
+                </div>
+                <img src="<?php echo do_shortcode('[sv slug="karuzela_4_plakat"]'); ?>"  onClick="javascript:location.href='<?php echo do_shortcode('[sv slug="karuzela_4_wiecej_link"]'); ?>';" class="link-cursor" alt="">
+                <a href="<?php echo do_shortcode('[sv slug="karuzela_4_kup_link"]'); ?>" class="redBtn">KUP BILET<img src="<?php echo get_template_directory_uri(); ?>/images/icon-ticket.svg"></a>
+              </div> -->
+                <!-- </textarea> -->
+                <button id="btnCopy" class="btn btn-outline-primary btn-sm mb-1">Copy</button>
+                <textarea name="" id="genCode"></textarea>
+                <div id="genCodeHelper"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        let genCode = document.querySelector('#genCode');
+        let genCodeHelper = document.querySelector('#genCodeHelper');
+        let genCodeBtn = document.querySelector('#genCodeBtn');
+        let genCodeResetBtn = document.querySelector('#genCodeResetBtn');
+        let btnCopy = document.querySelector('#btnCopy');
+
+        // genCode.addEventListener("input", initCM);
+
+
+
+        genCode.value = ``;
+
+        genCodeHelper.innerHTML = 
+        `<div class="carousel-item-container hide-carousel-item" id="carousel-item-one" data-istnieje='istnieje'>
+    <div>
+        <div class="carousel-hover-text link-pozytywni" onClick="javascript:location.href='';">
+            <h4></h4>
+            <h4></h4>
+            <h4></h4>
+        </div>
+    </div>
+    <img src=""  onClick="javascript:location.href='';" class="link-cursor" alt="">
+    <a href="{kupBiletLink}" class="redBtn">KUP BILET<img src="https://garnizonsztuki.org.pl/wp-content/themes/garnizon/images/icon-ticket.svg"></a>
+</div>`;
+
+        var editor = CodeMirror.fromTextArea(genCode, {
+            lineNumbers: true,
+            mode: 'xml',
+            theme: 'material-darker',
+            readOnly: true
+        })
+
+        editor.setSize('auto', '100vh')
+
+
+
+        genCodeResetBtn.onclick = function () {
+            genCode.value = '';
+            editor.setValue(genCode.value)
+            btnCopy.innerHTML = 'Copy'
+        }
+
+        btnCopy.onclick = function () {
+            // genCode.select()
+            // document.execCommand('copy');
+            navigator.clipboard.writeText(genCode.value);
+            btnCopy.innerHTML = 'Copied'
+        }
+
+
+        genCodeBtn.onclick = function (e) {
+            e.preventDefault();
+            document.querySelectorAll('input').forEach((input) => {
+                if (input.id == 'text1') {
+                    // genCode.value = genCode.value.replaceAll("{text1}", input.value);
+                    document.querySelector('.carousel-hover-text h4:nth-child(1)').innerHTML = input.value;
+                    genCode.value = genCodeHelper.innerHTML;
+                } 
+                if (input.id == 'text2') {
+                    document.querySelector('.carousel-hover-text h4:nth-child(2)').innerHTML = input.value;
+                    genCode.value = genCodeHelper.innerHTML;
+                } 
+
+                if (input.id == 'text3') {
+                    document.querySelector('.carousel-hover-text h4:nth-child(3)').innerHTML = input.value;
+                    genCode.value = genCodeHelper.innerHTML;
+                } 
+                
+                if (input.id == 'imgSrc') {
+                    document.querySelector('.carousel-item-container img.link-cursor').src = input.value;
+                    genCode.value = genCodeHelper.innerHTML;
+                } 
+
+                if (input.id == 'url') {
+                    input.value = input.value.replaceAll('://', ':\\/' + '\\/');
+                    document.querySelector('.carousel-hover-text').setAttribute('onClick', `javascript:location.href='${input.value}';`);
+                    document.querySelector('.carousel-item-container img.link-cursor').setAttribute('onClick', `javascript:location.href='${input.value}';`);
+                    genCode.value = genCodeHelper.innerHTML;
+                    // genCode.value = genCodeHelper.innerHTML.replaceAll('https://', ':\\/' + '\\/');
+
+
+                } 
+                if (input.id == 'kupBiletLink') {
+                    document.querySelector('.redBtn').href = input.value
+                    genCode.value = genCodeHelper.innerHTML;
+                } 
+                
+
+                console.log(input.id, input.value)
+            })
+            // genCode.value = genCode.value.replaceAll("{text1}", "The title");
+            // genCode.value = genCode.value.replaceAll("{text2}", "The title");
+            // genCode.value = genCode.value.replaceAll("{text3}", "The title");
+
+            genCode.value = genCode.value.replaceAll(' class="text1"', "");
+
+
+            editor.setValue(genCode.value)
+        }
+
+
+
+    </script>
+</body>
+
+</html>
